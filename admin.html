@@ -404,6 +404,17 @@ var itemTemplate = `<item>
 
 }
 
+function compareEpisodeDate( a, b ) {
+	if ( a.metadata.date < b.metadata.date ){
+		return 1;
+	}
+	if ( a.metadata.date > b.metadata.date ){
+		return -1;
+	}
+	return 0;
+}
+
+
 function writeIndexHTML(){
 	blobService.getBlobToText("$web", "index.template.html", function(error, template){
 	
@@ -415,6 +426,8 @@ function writeIndexHTML(){
 		var root = location.protocol + '//' + location.host + "/";
 
 		var items = "";
+
+		episodes.sort( compareEpisodeDate );
 
 		for (var i = 0, episode; episode = episodes[i]; i++) {
 		
@@ -447,7 +460,6 @@ function writeIndexHTML(){
 			if (i % 3 == 2){
 				items += '</div>'
 			}		
-			
 		}
 		
 		if (i % 3 != 2){
